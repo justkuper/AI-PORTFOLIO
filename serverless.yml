@@ -1,0 +1,41 @@
+service: portfolio-chat-backend
+frameworkVersion: '3'
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:AWS_REGION, 'us-east-2'}
+  stage: ${opt:stage, 'prod'}
+  memorySize: 256
+  timeout: 29
+
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - Content-Type
+      allowedMethods:
+        - POST
+        - OPTIONS
+
+  environment:
+    NODE_ENV: production
+    ANTHROPIC_API_KEY: ${env:ANTHROPIC_API_KEY}
+    OPENAI_API_KEY:    ${env:OPENAI_API_KEY, ''}
+    GOOGLE_API_KEY:    ${env:GOOGLE_API_KEY, ''}
+    XAI_API_KEY:       ${env:XAI_API_KEY, ''}
+    GROQ_API_KEY:      ${env:GROQ_API_KEY, ''}
+    SITE_URL: ${env:SITE_URL, 'https://main.df61d9uejwffq.amplifyapp.com'}
+
+functions:
+  chat:
+    handler: functions/chat.handler
+    events:
+      - httpApi:
+          path: /chat
+          method: POST
+      - httpApi:
+          path: /chat
+          method: OPTIONS
