@@ -951,3 +951,93 @@ section {
     bottom: 20px;
   }
 }
+
+/* ── ScrollBall ── */
+.scrollball-root {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 130px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.scrollball-shadow {
+  position: absolute;
+  bottom: 22px;
+  width: 44px;
+  height: 10px;
+  background: rgba(124, 106, 255, 0.35);
+  border-radius: 50%;
+  filter: blur(6px);
+  transition: transform 0.3s ease;
+}
+
+.scrollball-shadow.squish {
+  transform: scaleX(1.7) scaleY(0.6);
+}
+
+.scrollball-ball {
+  position: absolute;
+  bottom: 34px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, #c4b5fd, #7c6aff 58%, #5b4fcf);
+  box-shadow: 0 0 30px rgba(124, 106, 255, 0.65), 0 6px 20px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    bottom 0.12s ease-out;
+}
+
+.scrollball-ball.squish {
+  transform: scaleX(1.38) scaleY(0.7);
+  bottom: 26px;
+  transition:
+    transform 0.08s ease-out,
+    bottom 0.08s ease-out;
+}
+
+.scrollball-bubble {
+  position: absolute;
+  bottom: 88px;
+  width: max-content;
+  max-width: 220px;
+  background: rgba(17, 17, 24, 0.9);
+  border: 1px solid rgba(124, 106, 255, 0.3);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* anchor bubble to left side of ball when ball is on left half */
+.scrollball-bubble.anchor-left {
+  transform: translateX(0) translateY(6px);
+}
+.scrollball-bubble.anchor-left.visible {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+/* anchor bubble to right side of ball when ball is on right half */
+.scrollball-bubble.anchor-right {
+  transform: translateX(calc(-100% + 44px)) translateY(6px);
+}
+.scrollball-bubble.anchor-right.visible {
+  opacity: 1;
+  transform: translateX(calc(-100% + 44px)) translateY(0);
+}
+
+@media (max-width: 640px) {
+  .scrollball-bubble {
+    max-width: 160px;
+    font-size: 0.75rem;
+  }
+}
