@@ -1,8 +1,8 @@
 const stats = [
-  { number: '2026',  label: 'Current year'       },
-  { number: '∞',     label: 'Projects incoming'  },
-  { number: '100%',  label: 'Built with React'   },
-  { number: '0→1',   label: 'Mode always on'     },
+  { number: '8',     label: 'Apps live in production' },
+  { number: 'AWS',   label: 'Cloud infrastructure'    },
+  { number: 'F / S', label: 'Full-stack'              },
+  { number: 'Open',  label: 'To new roles'            },
 ]
 
 export default function About() {
@@ -15,18 +15,18 @@ export default function About() {
             <h2 className="section-title">Developer.<br />Builder. Creator.</h2>
 
             <p>
-              I build things end-to-end — from idea to deployed product.
-              Whether it's a web app, a tool, or an experiment, I care about
-              making it <strong>fast, clean, and useful</strong>.
+              I build full-stack web applications end-to-end — from
+              database and API design to cloud deployment and polished UI.
+              I care about shipping things that are <strong>fast, reliable, and production-ready</strong>.
             </p>
             <p>
-              This portfolio is my running launchpad. Every project you see here
-              was designed and built from scratch in 2026. No legacy code, no
-              filler — just the work.
+              On the frontend I work in <strong>React + TypeScript</strong>. On the backend
+              I write <strong>Node.js APIs and AWS Lambda functions</strong>,
+              deployed via <strong>AWS Amplify</strong> with CI/CD on every push.
             </p>
             <p>
-              I work primarily with <strong>React, JavaScript, and modern web
-              tooling</strong>, with a strong eye for design and user experience.
+              Every project on this page was designed and built from scratch —
+              no templates, no filler. Just real work, live in production.
             </p>
           </div>
 

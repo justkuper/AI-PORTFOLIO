@@ -4,7 +4,7 @@ export default function Hero() {
       <div className="container">
         <div className="hero-eyebrow">
           <span className="hero-eyebrow-dot" />
-          Available for new projects
+          Open to full-stack roles
         </div>
 
         <h1 className="hero-title">
@@ -13,8 +13,9 @@ export default function Hero() {
         </h1>
 
         <p className="hero-sub">
-          I'm Kuper — a developer and creator building apps, tools, and experiences.
-          This is my launchpad: everything I ship lives here.
+          I'm Kuper — a full-stack developer who ships complete products:
+          React UIs, Node.js APIs, and serverless cloud infrastructure on AWS.
+          Every project on this page is live.
         </p>
 
         <div className="hero-actions">
