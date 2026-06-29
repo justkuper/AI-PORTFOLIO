@@ -1,21 +1,24 @@
 import { useState, useEffect, useRef } from 'react'
 
 const STOPS = [
-  'Scroll to explore the portfolio.',
-  'Full-stack: React · Node.js · AWS.',
-  '5+ apps shipped and live in production.',
-  'Open to freelance & collaborations.',
-  'Made it to the bottom — say hello! 👋',
+  'Building things that actually work.',
+  'Developer.\nBuilder.\nCreator.',
+  'What I work with',
+  'Open to\ncollaborate',
+  "Let's talk ↓",
 ]
 
-const BALL = 44  // diameter px
-const PAD  = 32  // edge padding px
+const BALL     = 160   // diameter px
+const PAD_L    = 24    // left edge padding
+const PAD_R    = 110   // right edge padding (clears chat FAB)
+const FLOOR    = 120   // px from bottom when ball hits wall
+const ARC_H    = 210   // max arc height above floor
 
 export default function ScrollBall() {
   const [xPct,    setXPct]    = useState(0)
+  const [yBottom, setYBottom] = useState(FLOOR)
   const [stopIdx, setStopIdx] = useState(0)
   const [squish,  setSquish]  = useState(false)
-  const [atEdge,  setAtEdge]  = useState(true)
   const prevStop = useRef(-1)
 
   useEffect(() => {
@@ -29,15 +32,20 @@ export default function ScrollBall() {
       const t   = progress * SEGS
       const seg = Math.min(Math.floor(t), SEGS - 1)
       const f   = t - seg
-      // cosine ease — slow at edges, fast in middle
-      const e   = (1 - Math.cos(f * Math.PI)) / 2
-      const x   = seg % 2 === 0 ? e * 100 : (1 - e) * 100
+
+      // Horizontal position with cosine ease
+      const eH = (1 - Math.cos(f * Math.PI)) / 2
+      const x  = seg % 2 === 0 ? eH * 100 : (1 - eH) * 100
+
+      // Vertical arc: sine peak in middle, zero at walls
+      const arc = Math.sin(f * Math.PI) * ARC_H
 
       setXPct(x)
+      setYBottom(FLOOR + arc)
 
-      const atL = x < 6
-      const atR = x > 94
-      setAtEdge(atL || atR)
+      // Detect wall stops
+      const atL = x < 5
+      const atR = x > 95
 
       if (atL || atR) {
         const idx = Math.min(
@@ -50,7 +58,7 @@ export default function ScrollBall() {
           prevStop.current = idx
           setStopIdx(idx)
           setSquish(true)
-          setTimeout(() => setSquish(false), 500)
+          setTimeout(() => setSquish(false), 550)
         }
       }
     }
@@ -60,32 +68,22 @@ export default function ScrollBall() {
     return () => window.removeEventListener('scroll', update)
   }, [])
 
-  // CSS left for the ball (keeps it inside PAD on both edges)
-  const ballLeft = `calc(${PAD}px + (${xPct} / 100) * (100vw - ${PAD * 2 + BALL}px))`
-
-  // Bubble anchors left when ball is on left half, right when on right half
-  const onLeft = xPct <= 50
+  const ballLeft = `calc(${PAD_L}px + (${xPct} / 100) * (100vw - ${PAD_L + PAD_R + BALL}px))`
 
   return (
     <div className="scrollball-root">
-      {/* Shadow */}
+      {/* Shadow on the floor */}
       <div
         className={`scrollball-shadow${squish ? ' squish' : ''}`}
-        style={{ left: ballLeft }}
+        style={{ left: ballLeft, opacity: Math.max(0, 1 - (yBottom - FLOOR) / ARC_H) }}
       />
 
       {/* Ball */}
       <div
         className={`scrollball-ball${squish ? ' squish' : ''}`}
-        style={{ left: ballLeft }}
-      />
-
-      {/* Info bubble */}
-      <div
-        className={`scrollball-bubble${atEdge ? ' visible' : ''}${onLeft ? ' anchor-left' : ' anchor-right'}`}
-        style={{ left: ballLeft }}
+        style={{ left: ballLeft, bottom: yBottom }}
       >
-        {STOPS[stopIdx]}
+        <span className="scrollball-text">{STOPS[stopIdx]}</span>
       </div>
     </div>
   )
